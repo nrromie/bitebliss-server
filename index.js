@@ -62,6 +62,19 @@ async function run() {
         res.send({ error: 'An error occured' })
       }
     });
+    
+    app.patch('/update/:id', async (req, res) => {
+      const productId = req.params.id;
+      const updatedProductData = req.body;
+      try {
+        await productsCollection.updateOne({ _id: new ObjectId(productId) }, { $set: updatedProductData });
+        res.json({ message: 'Product updated successfully' });
+      } catch (error) {
+        console.error(error);
+        res.send({ error: 'Internal Server Error' });
+      }
+    });
+
 
 
     // Send a ping to confirm a successful connection
