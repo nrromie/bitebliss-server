@@ -26,7 +26,34 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    
+
+    const productsCollection = client.db('brandshopDB').collection('products')
+    const brandsCollection = client.db('brandshopDB').collection('brands')
+
+
+    app.get('/brands', async (req, res) => {
+      try {
+        const cursor = await brandsCollection.find().toArray();
+        res.send(cursor);
+      } catch (error) {
+        res.send({ error: 'Internal Server Error' });
+      }
+    });
+
+
+
+    app.get('/products/:name', async (req, res) => {
+      const brand = req.params.name;
+      try {
+        const cursor = productsCollection.find({ brandName: brand });
+        const result = await cursor.toArray();
+        res.send(result);
+      } catch (error) {
+        res.send({ error: 'Internal Server Error' });
+      }
+    });
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
