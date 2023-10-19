@@ -53,6 +53,16 @@ async function run() {
       }
     });
 
+    app.post('/products', async (req, res) => {
+      const newProduct = req.body;
+      try {
+        const result = await productsCollection.insertOne(newProduct);
+        res.send(result);
+      } catch {
+        res.send({ error: 'An error occured' })
+      }
+    });
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
