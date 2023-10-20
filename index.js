@@ -30,11 +30,22 @@ async function run() {
     const productsCollection = client.db('brandshopDB').collection('products')
     const brandsCollection = client.db('brandshopDB').collection('brands')
     const usersCollection = client.db('brandshopDB').collection('users')
+    const offersCollection = client.db('brandshopDB').collection('offers')
 
     //retrieve brands
     app.get('/brands', async (req, res) => {
       try {
         const cursor = await brandsCollection.find().toArray();
+        res.send(cursor);
+      } catch (error) {
+        res.send({ error: 'Internal Server Error' });
+      }
+    });
+
+    //retrieve offers
+    app.get('/offers', async (req, res) => {
+      try {
+        const cursor = await offersCollection.find().toArray();
         res.send(cursor);
       } catch (error) {
         res.send({ error: 'Internal Server Error' });
